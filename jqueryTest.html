@@ -1,17 +1,17 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Demo</title>
+    <title>Test</title>
     <link rel="stylesheet" href="styles.css"/>
 </head>
    
 <body>
-    <script src="../../jquery.js"></script>
+    <script src="jquery.js"></script>
     <h1>Test for jQuery</h1>
-    <script>
+    <script type="text/javascript">
         var CANVAS_WIDTH = 480;
         var CANVAS_HEIGHT = 320;
-        var img = 
+       
 
         var canvasElement = $("<canvas width='" + CANVAS_WIDTH + 
                               "' height='" + CANVAS_HEIGHT + "'></canvas>");
@@ -21,8 +21,7 @@
         var textY = 50;
         var FPS = 60;
         
-        canvas.font = "normal 20pt cursive"
-        
+    
         setInterval(function() {
             update();
             draw();
@@ -41,4 +40,5 @@
     </script>
     
 </body>
+    <div id="clickme">Hello</div>
 </html>
