@@ -1,2 +1,2 @@
 # JqueryTest
-Simple animation with jQuery
+Test for simple animation with jQuery
