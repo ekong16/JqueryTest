@@ -123,10 +123,14 @@
         
         var myChar = new Character(10,10,50,50,"http://www.wpclipart.com/smiley/assorted_smiley/assorted_2/fuzzball_smiley.svg");
         
+        
+        
         window.requestAnimFrame = (function(){
             return window.requestAnimationFrame||
             window.webkitRequestAnimationFrame ||
             window.mozRequestAnimationFrame    ||
+            window.oRequestAnimationFrame      || 
+            window.msRequestAnimationFrame     || 
             function(callback){
                 window.setTimeout(callback, 1000 / 60);
             };
