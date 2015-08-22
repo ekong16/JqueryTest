@@ -21,60 +21,65 @@
         var textY = 100;
         var FPS = 60;
         
-        window.addEventListener('resize', resizeCanvas, false);
-        window.addEventListener('orientationchange', resizeCanvas, false);
-    
+        var right = false;
+        var up = false;
+        var left = false;
+        var down = false;
+        
+        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+            window.addEventListener('orientationchange', resizeCanvas, false);
+        }
+        else {
+            window.addEventListener('resize', resizeCanvas, false);
+            
+            $(window).keydown(function(e){
+                //alert("hi");
+                keyboard = true;
+                switch(e.which) {
+                        case 37: left = true; 
+                        break;
+
+                        case 38: up = true;
+                        break;
+
+                        case 39: right = true;
+                        break;
+
+                        case 40: down = true;
+                        break;
+
+                        default: return;
+
+                }
+                    e.preventDefault();
+            });
+
+            $(window).keyup(function(e){
+                switch(e.which) {
+                        case 37: left = false; 
+                        break;
+
+                        case 38: up = false;
+                        break;
+
+                        case 39: right = false;
+                        break;
+
+                        case 40: down = false;
+                        break;
+
+                        default: return;
+                }
+            });
+        }
         
         function resizeCanvas(){
             canvas.canvas.width = window.innerWidth*0.9;
             canvas.canvas.height = window.innerHeight*0.8;
         }
         
-        var right = false;
-        var up = false;
-        var left = false;
-        var down = false;
+        
 
-        $(window).keydown(function(e){
-            //alert("hi");
-            keyboard = true;
-            switch(e.which) {
-                    case 37: left = true; 
-                    break;
-
-                    case 38: up = true;
-                    break;
-
-                    case 39: right = true;
-                    break;
-
-                    case 40: down = true;
-                    break;
-
-                    default: return;
-
-            }
-                e.preventDefault();
-        });
-
-
-        $(window).keyup(function(e){
-            switch(e.which) {
-                    case 37: left = false; 
-                    break;
-
-                    case 38: up = false;
-                    break;
-
-                    case 39: right = false;
-                    break;
-
-                    case 40: down = false;
-                    break;
-
-                    default: return;
-            }
-        });
         
         function Sprite(x,y,w,h,img_src) {
             this.x = x;
