@@ -7,10 +7,10 @@
    
 <body>
     <script src="jquery.js"></script>
-    <h1>Test for jQuery</h1>
+    
     <script type="text/javascript">
-        var CANVAS_WIDTH = window.innerWidth*0.9;
-        var CANVAS_HEIGHT = window.innerHeight*0.8;
+        var CANVAS_WIDTH = window.innerWidth*0.95;
+        var CANVAS_HEIGHT = window.innerHeight*0.95;
 
         var canvasElement = $("<canvas width='" + CANVAS_WIDTH + 
                               "' height='" + CANVAS_HEIGHT + "'></canvas>");
@@ -25,22 +25,26 @@
         var up = false;
         var left = false;
         var down = false;
+        var jumped = false;
         
-        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
             window.addEventListener('orientationchange', resizeCanvas, false);
-            
+            window.addEventListener('touchstart', 
+                function(e){
+                    e.preventDefault;
+                    up = true;
+            }, false);
         }
         else {
             window.addEventListener('resize', resizeCanvas, false);
             
             $(window).keydown(function(e){
                 //alert("hi");
-                keyboard = true;
                 switch(e.which) {
                         case 37: left = true; 
                         break;
 
-                        case 38: up = true;
+                        case 32: if (!jumped) {up = true; jumped = true;} else{up=false;}
                         break;
 
                         case 39: right = true;
@@ -52,7 +56,7 @@
                         default: return;
 
                 }
-                    e.preventDefault();
+                e.preventDefault();
             });
 
             $(window).keyup(function(e){
@@ -60,7 +64,7 @@
                         case 37: left = false; 
                         break;
 
-                        case 38: up = false;
+                        case 32: up = false; jumped = false;
                         break;
 
                         case 39: right = false;
@@ -75,12 +79,9 @@
         }
         
         function resizeCanvas(){
-            canvas.canvas.width = window.innerWidth*0.9;
-            canvas.canvas.height = window.innerHeight*0.8;
+            canvas.canvas.width = window.innerWidth*0.95;
+            canvas.canvas.height = window.innerHeight*0.95;
         }
-        
-        
-
         
         function Sprite(x,y,w,h,img_src) {
             this.x = x;
@@ -99,19 +100,20 @@
         function Character(x,y,w,h,img_src) {
             var t = 0;
             Sprite.call(this,x,y,w,h,img_src);
+            this.yVel = 0;
             this.move = function(){
-                if (up) {t=0; this.y-=10;}
+                if (up) {this.yVel=10; this.y-=10;}
                 if (down) {t=0; this.y+=1;}
                 if (left) {t=0; this.x--}
                 if (right) {t=0; this.x++}
               
                 if (!up && !down && !left && !right){ 
-                    if (this.y + this.h + t >= canvas.canvas.height){
+                    if (this.y + this.h - this.yVel >= canvas.canvas.height){
                         this.y = canvas.canvas.height - this.h;
                     }
                     else {
-                        this.y += t; 
-                        t+=1;
+                        this.y -= this.yVel; 
+                        this.yVel-=1;
                     } 
                 }
             };
@@ -121,7 +123,7 @@
         
         Character.prototype = Object.create(Sprite.prototype);
         
-        var myChar = new Character(10,10,50,50,"fuzz.png");
+        var myChar = new Character(10,10,80,80,"fuzz.png");
         
         
         
