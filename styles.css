@@ -11,4 +11,5 @@ canvas {
     border: 3px solid;
     border-color: black;
     -webkit-user-select: none;
+    -webkit-touch-callout: none;
 }

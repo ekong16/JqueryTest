@@ -32,7 +32,7 @@
             window.addEventListener('orientationchange', resizeCanvas, false);
             
             window.addEventListener('touchstart', function(e){
-                e.preventDefault;
+                e.preventDefault();
                 if (!jumped){
                     up = true;
                     jumped = true;
@@ -40,12 +40,12 @@
             }, false);
             
             window.addEventListener('touchend', function(e){
-                e.preventDefault;
+                e.preventDefault();
                 up = false; jumped = false;
             }, false);
             
             window.addEventListener('touchmove', function(e){
-                e.preventDefault;
+                e.preventDefault();
             },false);                          
         }
         else {
