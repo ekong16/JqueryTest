@@ -11,9 +11,6 @@
     <script type="text/javascript">
         var CANVAS_WIDTH = window.innerWidth*0.9;
         var CANVAS_HEIGHT = window.innerHeight*0.8;
-        var cWidth = CANVAS_WIDTH;
-        var cHeight = CANVAS_HEIGHT;
-       
 
         var canvasElement = $("<canvas width='" + CANVAS_WIDTH + 
                               "' height='" + CANVAS_HEIGHT + "'></canvas>");
@@ -78,6 +75,7 @@
                     default: return;
             }
         });
+        
         function Sprite(x,y,w,h,img_src) {
             this.x = x;
             this.y = y;
@@ -102,7 +100,7 @@
                 if (right) {t=0; this.x++}
               
                 if (!up && !down && !left && !right){ 
-                    if (this.y + this.h >= canvas.canvas.height){
+                    if (this.y + this.h + t >= canvas.canvas.height){
                         this.y = canvas.canvas.height - this.h;
                     }
                     else {
@@ -133,7 +131,7 @@
        
         
         function draw(){
-            canvas.clearRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
+            canvas.clearRect(0,0,canvas.canvas.width,canvas.canvas.height);
             canvas.fillStyle = "#000"; // Set color to black
             canvas.font = "30px Arial";
             canvas.fillText("Sup!", textX, textY);
