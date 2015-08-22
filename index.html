@@ -33,6 +33,51 @@
             canvas.canvas.height = window.innerHeight*0.8;
         }
         
+        var right = false;
+        var up = false;
+        var left = false;
+        var down = false;
+
+        $(window).keydown(function(e){
+            //alert("hi");
+            keyboard = true;
+            switch(e.which) {
+                    case 37: left = true; 
+                    break;
+
+                    case 38: up = true;
+                    break;
+
+                    case 39: right = true;
+                    break;
+
+                    case 40: down = true;
+                    break;
+
+                    default: return;
+
+            }
+                e.preventDefault();
+        });
+
+
+        $(window).keyup(function(e){
+            switch(e.which) {
+                    case 37: left = false; 
+                    break;
+
+                    case 38: up = false;
+                    break;
+
+                    case 39: right = false;
+                    break;
+
+                    case 40: down = false;
+                    break;
+
+                    default: return;
+            }
+        });
         function Sprite(x,y,w,h,img_src) {
             this.x = x;
             this.y = y;
@@ -49,38 +94,14 @@
         
         function Character(x,y,w,h,img_src) {
             var t = 0;
-            var keyPressed = false; 
             Sprite.call(this,x,y,w,h,img_src);
             this.move = function(){
-                var right = false;
-                var up = false;
-                var left = false;
-                var down = false;
-                $(document).keydown(function(e){
-                    //alert("hi");
-                    keyPressed = true;
-                    switch(e.which) {
-                            case 37: left = true; 
-                            break;
-
-                            case 38: up = true;
-                            break;
-
-                            case 39: right = true;
-                            break;
-
-                            case 40: down = true;
-                            break;
-                            
-                            default: return;
-
-                            }
-                        e.preventDefault();
-                    });
-                
+                if (up) {t=0; this.y-=10;}
+                if (down) {t=0; this.y+=1;}
+                if (left) {t=0; this.x--}
+                if (right) {t=0; this.x++}
               
-                
-                if (!keyPressed){ 
+                if (!up && !down && !left && !right){ 
                     if (this.y + this.h >= canvas.canvas.height){
                         this.y = canvas.canvas.height - this.h;
                     }
