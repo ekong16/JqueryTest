@@ -45,7 +45,58 @@
             }; 
         }
             
-        var obstacle = new Sprite(10,10,50,50,"http://www.wpclipart.com/smiley/assorted_smiley/assorted_2/fuzzball_smiley.svg");
+    
+        
+        function Character(x,y,w,h,img_src) {
+            var t = 0;
+            var keyPressed = false; 
+            Sprite.call(this,x,y,w,h,img_src);
+            this.move = function(){
+                var right = false;
+                var up = false;
+                var left = false;
+                var down = false;
+                $(document).keydown(function(e){
+                    //alert("hi");
+                    keyPressed = true;
+                    switch(e.which) {
+                            case 37: left = true; 
+                            break;
+
+                            case 38: up = true;
+                            break;
+
+                            case 39: right = true;
+                            break;
+
+                            case 40: down = true;
+                            break;
+                            
+                            default: return;
+
+                            }
+                        e.preventDefault();
+                    });
+                
+              
+                
+                if (!keyPressed){ 
+                    if (this.y + this.h >= canvas.canvas.height){
+                        this.y = canvas.canvas.height - this.h;
+                    }
+                    else {
+                        this.y += t; 
+                        t+=1;
+                    } 
+                }
+            };
+        }
+        
+         
+        
+        Character.prototype = Object.create(Sprite.prototype);
+        
+        var myChar = new Character(10,10,50,50,"http://www.wpclipart.com/smiley/assorted_smiley/assorted_2/fuzzball_smiley.svg");
         
         
         setInterval(function() {
@@ -56,14 +107,16 @@
         function update(){
             textX += 1;
             textY += 1;
+            myChar.move();
         }
+       
         
         function draw(){
             canvas.clearRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
             canvas.fillStyle = "#000"; // Set color to black
             canvas.font = "30px Arial";
             canvas.fillText("Sup!", textX, textY);
-            obstacle.draw();
+            myChar.draw();
         }
         
     </script>
