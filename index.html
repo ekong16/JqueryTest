@@ -9,8 +9,8 @@
     <script src="jquery.js"></script>
     <h1>Test for jQuery</h1>
     <script type="text/javascript">
-        var CANVAS_WIDTH = window.innerWidth*0.8;
-        var CANVAS_HEIGHT = window.innerHeight*0.8;
+        var CANVAS_WIDTH = window.innerWidth;
+        var CANVAS_HEIGHT = window.innerHeight;
         var cWidth = CANVAS_WIDTH;
         var cHeight = CANVAS_HEIGHT;
        
@@ -24,6 +24,14 @@
         var textY = 100;
         var FPS = 60;
         
+        window.addEventListener('resize', resizeCanvas, false);
+        window.addEventListener('orientationchange', resizeCanvas, false);
+        resizeCanvas();
+        
+        function resizeCanvas(){
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
         
         function Sprite(x,y,w,h,img_src) {
             this.x = x;
