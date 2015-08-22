@@ -9,17 +9,21 @@
     <script src="jquery.js"></script>
     <h1>Test for jQuery</h1>
     <script type="text/javascript">
-        var CANVAS_WIDTH = 480;
-        var CANVAS_HEIGHT = 340;
+        var CANVAS_WIDTH = window.innerWidth*0.8;
+        var CANVAS_HEIGHT = window.innerHeight*0.8;
+        var cWidth = CANVAS_WIDTH;
+        var cHeight = CANVAS_HEIGHT;
        
 
         var canvasElement = $("<canvas width='" + CANVAS_WIDTH + 
                               "' height='" + CANVAS_HEIGHT + "'></canvas>");
+        
         var canvas = canvasElement.get(0).getContext("2d");
         canvasElement.appendTo('body');
         var textX = 100;
         var textY = 100;
         var FPS = 60;
+        
         
         function Sprite(x,y,w,h,img_src) {
             this.x = x;
@@ -33,7 +37,7 @@
             }; 
         }
             
-        var obstacle = new Sprite(10,10,200,200,"http://www.wpclipart.com/smiley/assorted_smiley/assorted_2/fuzzball_smiley.svg");
+        var obstacle = new Sprite(10,10,50,50,"http://www.wpclipart.com/smiley/assorted_smiley/assorted_2/fuzzball_smiley.svg");
         
         
         setInterval(function() {
@@ -49,6 +53,7 @@
         function draw(){
             canvas.clearRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
             canvas.fillStyle = "#000"; // Set color to black
+            canvas.font = "30px Arial";
             canvas.fillText("Sup!", textX, textY);
             obstacle.draw();
         }
@@ -56,5 +61,5 @@
     </script>
     
 </body>
-    <div id="clickme">Hello</div>
+    
 </html>
