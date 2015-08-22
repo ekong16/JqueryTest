@@ -21,7 +21,21 @@
         var textY = 100;
         var FPS = 60;
         
-    
+        function Sprite(x,y,w,h,img_src) {
+            this.x = x;
+            this.y = y;
+            this.w = w;
+            this.h = h;
+            this.img = new Image(); 
+            this.img.src = img_src;
+            this.draw = function(){
+                canvas.drawImage(this.img, this.x,this.y,this.w,this.h);
+            }; 
+        }
+            
+        var obstacle = new Sprite(10,10,200,200,"http://www.wpclipart.com/smiley/assorted_smiley/assorted_2/fuzzball_smiley.svg");
+        
+        
         setInterval(function() {
             update();
             draw();
@@ -36,7 +50,9 @@
             canvas.clearRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
             canvas.fillStyle = "#000"; // Set color to black
             canvas.fillText("Sup!", textX, textY);
+            obstacle.draw();
         }
+        
     </script>
     
 </body>
