@@ -106,6 +106,9 @@
             myChar.w = canvas.canvas.height*0.10;
             myChar.h = canvas.canvas.height*0.10;
             myChar.x = canvas.canvas.width/7;
+            myChar.vel = canvas.canvas.height/70
+            myChar.fall = canvas.canvas.height/500;
+            
         }
         
         function Sprite(x,y,w,h,img_src) {
@@ -123,11 +126,13 @@
         function Character(x,y,w,h,img_src) {
             var t = 0;
             Sprite.call(this,x,y,w,h,img_src);
-            this.yVel = 0;
+            this.vel = canvas.canvas.height/70;
+            this.yVel = this.vel;
+            this.fall = canvas.canvas.height/500;
             this.move = function(){
-                if (up) {
-                    this.yVel=10; 
-                    this.y-=10;
+                if (up) { 
+                    this.yVel=this.vel;
+                    this.y -= this.vel;
                     this.img.src="potato2/sprite_3.png";
                 }
                 //if (down) {t=0; this.y+=1;}
@@ -135,10 +140,10 @@
                 //if (right) {t=0; this.x++}
                 if (!up) {
                     this.y -= this.yVel; 
-                    this.yVel-=1;
+                    this.yVel -= this.fall;
                     this.img.src="potato2/sprite_1.png";
                 } 
-                if (this.y - this.yVel<= 0){
+                if (this.y - this.yVel <= 0){
                         this.y = 0;
                 }
                 if (this.y + this.h - this.yVel >= canvas.canvas.height){
@@ -186,6 +191,8 @@
             canvas.font = "30px Arial";
             canvas.fillText("Sup!", textX, textY);
             myChar.draw();
+            console.log("yVel"+ myChar.yVel);
+            console.log("vel"+myChar.vel);
         }
         
     </script>
