@@ -26,6 +26,7 @@
         var textX = 100;
         var textY = 100;
         var FPS = 60;
+        var scene = 0;
         
         var right = false;
         var up = false;
@@ -55,7 +56,12 @@
             
             window.addEventListener('touchmove', function(e){
                 e.preventDefault();
-            },false);                          
+            },false);
+            if (scene === 0) {
+                $(window).on("tap",function(){
+                    scene++;
+                });
+            }
         }
         else {
             window.addEventListener('resize', resizeCanvas, false);
@@ -96,6 +102,11 @@
                         break;
 
                         default: return;
+                }
+            });
+            $(window).click(function(){
+                if (scene === 0) {
+                scene ++;
                 }
             });
         }
@@ -174,18 +185,25 @@
         })();
         
         function update(){
+            if (scene === 1) {
             textX += 1;
             textY += 1;
             myChar.move();
+            }
         }
        
         
         function draw(){
+            if (scene === 0) {
+            canvas.clearRect(0,0,canvas.canvas.width,canvas.canvas.height);
+            canvas.fillStyle = "#000"; // Set color to black
+            } else if (scene === 1) {
             canvas.clearRect(0,0,canvas.canvas.width,canvas.canvas.height);
             canvas.fillStyle = "#000"; // Set color to black
             canvas.font = "30px Arial";
             canvas.fillText("Sup!", textX, textY);
             myChar.draw();
+            }
         }
         
     </script>
