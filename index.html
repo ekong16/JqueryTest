@@ -30,6 +30,7 @@
         var left = false;
         var down = false;
         var jumped = false;
+        var charSize = canvas.canvas.height*0.15;
         
         //Check if computer or mobile. Adds relevent event listeners --keyboard or touch. 
         if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -49,7 +50,7 @@
             }, false);
             
             window.addEventListener('touchmove', function(e){
-                //e.preventDefault();
+                e.preventDefault();
             },false);                          
         }
         else {
@@ -98,6 +99,8 @@
         function resizeCanvas(){
             canvas.canvas.width = window.innerWidth*0.95;
             canvas.canvas.height = window.innerHeight*0.95;
+            myChar.w = canvas.canvas.height*0.15;
+            myChar.h = canvas.canvas.height*0.15;
         }
         
         function Sprite(x,y,w,h,img_src) {
@@ -136,7 +139,7 @@
         
         Character.prototype = Object.create(Sprite.prototype);
         
-        var myChar = new Character(10,10,80,80,"fuzz.png");
+        var myChar = new Character(10,10,charSize,charSize,"fuzz.png");
         
         //found supposedly more efficient way to animate on internet
         window.requestAnimFrame = (function(){

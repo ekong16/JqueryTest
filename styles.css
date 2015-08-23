@@ -6,11 +6,11 @@ html, body {
 
 canvas {
     display:block;
-    margin-left:auto;
-    margin-right:auto;
-    font-family: cursive;
-    border: 3px solid;
-    border-color: black;
+    margin:0 auto;
+    
+    /*border: 3px solid;
+    border-color: black;*/
+    background: #00BFFF;
     -webkit-user-select: none;
     -webkit-touch-callout: none;
 }
