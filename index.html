@@ -113,11 +113,11 @@
                 }
             });
         }
-        $("#target").click(function(){
+        $("#target").bind("click touchstart", function(){
                 scene = "game";
                 $(".scene0").hide();
             });
-        $("#other").click(function(){
+        $("#other").bind("click touchstart", function(){
                 if (scene === 0) {
                 scene = "instructions";
                 }
@@ -227,7 +227,6 @@
             canvas.fillStyle = "#000"; // Set color to black
             myChar.draw();
             } else if (scene === "instructions") {
-           
             canvas.fillStyle = "#000";
             canvas.font = "30px Arial";
             canvas.fillText("Instructions:", 100, 100);
