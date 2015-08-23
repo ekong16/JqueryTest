@@ -13,8 +13,8 @@
     <script src="jquery.js"></script>
     
     <script type="text/javascript">
-        var CANVAS_WIDTH = window.innerWidth*0.95;
-        var CANVAS_HEIGHT = window.innerHeight*0.95;
+        var CANVAS_WIDTH = window.innerWidth;
+        var CANVAS_HEIGHT = window.innerHeight;
 
         var canvasElement = $("<canvas width='" + CANVAS_WIDTH + 
                               "' height='" + CANVAS_HEIGHT + "'></canvas>");
@@ -97,8 +97,8 @@
         }
         
         function resizeCanvas(){
-            canvas.canvas.width = window.innerWidth*0.95;
-            canvas.canvas.height = window.innerHeight*0.95;
+            canvas.canvas.width = window.innerWidth;
+            canvas.canvas.height = window.innerHeight;
             myChar.w = canvas.canvas.height*0.15;
             myChar.h = canvas.canvas.height*0.15;
         }
