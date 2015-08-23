@@ -32,6 +32,15 @@ canvas {
     height:100vh;
 }
 
+#helpPage {
+    display:block;
+    background: #88BFFF;
+    /*top: 0; right: 0; bottom: 0; left: 0;*/
+    position: absolute;
+    width:100vw;
+    height:100vh;
+}
+
 button.scene0 {
     background: #88BFFF;
     display: block;

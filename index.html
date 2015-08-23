@@ -18,6 +18,11 @@
             Instructions
         </button>
     </article>
+    <article class="scenehelp" id="helpPage">
+        <button class="scenehelp" id="return">
+            Back
+        </button>
+    </article>
     <script src="jquery.js"></script>
     
     <script type="text/javascript">
@@ -119,11 +124,16 @@
                 $(".scene0").hide();
             });
         $("#other").bind("click touchstart", function(){
-                if (scene === 0) {
                 scene = "instructions";
-                }
+                $(".scene0").hide();
+                $(".scenehelp").show();
             });
-        
+        $("#return").bind("click touchstart", function(){
+                scene = 0;
+                $(".scenehelp").hide();
+                $(".scene0").show();
+            });
+
         function resizeCanvas(){
             canvas.canvas.width = window.innerWidth;
             canvas.canvas.height = window.innerHeight;
@@ -233,7 +243,7 @@
         
         function draw(){
             if (scene === 0) {
-            
+            $(".scenehelp").hide();
             /*canvas.fillStyle = "#000"; // Set color to black
             canvas.font = "80px Arial";
             canvas.fillText("Hopper Game", textX, textY);*/
@@ -244,9 +254,9 @@
             myBlock.draw();
             myChar.draw();
             } else if (scene === "instructions") {
-            canvas.fillStyle = "#000";
+            /*canvas.fillStyle = "#000";
             canvas.font = "30px Arial";
-            canvas.fillText("Instructions:", 100, 100);
+            canvas.fillText("Instructions:", 100, 100);*/
             }
         }
         
