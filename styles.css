@@ -6,7 +6,8 @@ html, body {
 
 canvas {
     display:block;
-    margin:auto;
+    margin-left:auto;
+    margin-right:auto;
     font-family: cursive;
     border: 3px solid;
     border-color: black;
