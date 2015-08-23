@@ -128,14 +128,15 @@
                 if (up) {
                     this.yVel=10; 
                     this.y-=10;
-                   
+                    this.img.src="potato2/sprite_3.png";
                 }
                 //if (down) {t=0; this.y+=1;}
                 //if (left) {t=0; this.x--}
                 //if (right) {t=0; this.x++}
                 if (!up) {
-                        this.y -= this.yVel; 
-                        this.yVel-=1;
+                    this.y -= this.yVel; 
+                    this.yVel-=1;
+                    this.img.src="potato2/sprite_1.png";
                 } 
                 if (this.y - this.yVel<= 0){
                         this.y = 0;
