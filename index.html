@@ -101,6 +101,7 @@
             canvas.canvas.height = window.innerHeight;
             myChar.w = canvas.canvas.height*0.15;
             myChar.h = canvas.canvas.height*0.15;
+            myChar.x = canvas.canvas.width/5;
         }
         
         function Sprite(x,y,w,h,img_src) {
@@ -121,11 +122,11 @@
             this.yVel = 0;
             this.move = function(){
                 if (up) {this.yVel=10; this.y-=10;}
-                if (down) {t=0; this.y+=1;}
-                if (left) {t=0; this.x--}
-                if (right) {t=0; this.x++}
+                //if (down) {t=0; this.y+=1;}
+                //if (left) {t=0; this.x--}
+                //if (right) {t=0; this.x++}
               
-                if (!up && !down && !left && !right){ 
+                if (!up){ 
                     if (this.y + this.h - this.yVel >= canvas.canvas.height){
                         this.y = canvas.canvas.height - this.h;
                     }
@@ -139,7 +140,7 @@
         
         Character.prototype = Object.create(Sprite.prototype);
         
-        var myChar = new Character(10,10,charSize,charSize,"fuzz.png");
+        var myChar = new Character(canvas.canvas.width/5,10,charSize,charSize,"fuzz.png");
         
         //found supposedly more efficient way to animate on internet
         window.requestAnimFrame = (function(){
