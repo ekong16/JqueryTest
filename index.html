@@ -57,11 +57,6 @@
             window.addEventListener('touchmove', function(e){
                 e.preventDefault();
             },false);
-            if (scene === 0) {
-                $(window).on("tap",function(){
-                    scene++;
-                });
-            }
         }
         else {
             window.addEventListener('resize', resizeCanvas, false);
@@ -104,12 +99,12 @@
                         default: return;
                 }
             });
-            $(window).click(function(){
+        }
+        $(window).click(function(){
                 if (scene === 0) {
                 scene ++;
                 }
             });
-        }
         
         function resizeCanvas(){
             canvas.canvas.width = window.innerWidth;
