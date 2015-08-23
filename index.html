@@ -201,8 +201,7 @@
             Sprite.call(this,x,y,w,h);
             this.vel = Math.random()*canvas.canvas.width/70;
             this.img.src = blockpics[(function(){return Math.floor(Math.random()*3)})()];
-            this.resize = function(){
-                this.y = 
+            
             this.move = function(){
                 this.x -= this.vel;
             };
