@@ -36,7 +36,7 @@
         if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
             window.addEventListener('orientationchange', resizeCanvas, false);
             window.addEventListener("load", function(){ 
-                window. scrollTo(0, 0); });
+                window.scrollTo(0, 0); });
             window.addEventListener('touchstart', function(e){
                 e.preventDefault();
                 if (!jumped){
