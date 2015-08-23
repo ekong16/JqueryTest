@@ -8,11 +8,13 @@
     <title>Test</title>
     <link rel="stylesheet" href="styles.css"/>
 </head>
-   
+
 <body>
     <script src="jquery.js"></script>
     
     <script type="text/javascript">
+        /*TODO: Figure out how to get mobile version to be so that you cant hold it indefinitely.
+        */
         var CANVAS_WIDTH = window.innerWidth;
         var CANVAS_HEIGHT = window.innerHeight;
 
@@ -30,7 +32,8 @@
         var left = false;
         var down = false;
         var jumped = false;
-        var charSize = canvas.canvas.height*0.15;
+        var charSize = canvas.canvas.height*0.1;
+       
         
         //Check if computer or mobile. Adds relevent event listeners --keyboard or touch. 
         if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -100,21 +103,21 @@
         function resizeCanvas(){
             canvas.canvas.width = window.innerWidth;
             canvas.canvas.height = window.innerHeight;
-            myChar.w = canvas.canvas.height*0.15;
-            myChar.h = canvas.canvas.height*0.15;
+            myChar.w = canvas.canvas.height*0.10;
+            myChar.h = canvas.canvas.height*0.10;
             myChar.x = canvas.canvas.width/7;
         }
         
         function Sprite(x,y,w,h,img_src) {
+            this.img = new Image(); 
+            this.img.src = img_src;
             this.x = x;
             this.y = y;
             this.w = w;
             this.h = h;
-            this.img = new Image(); 
-            this.img.src = img_src;
             this.draw = function(){
                 canvas.drawImage(this.img, this.x,this.y,this.w,this.h);
-            }; 
+            };
         }
             
         function Character(x,y,w,h,img_src) {
@@ -122,26 +125,34 @@
             Sprite.call(this,x,y,w,h,img_src);
             this.yVel = 0;
             this.move = function(){
-                if (up) {this.yVel=10; this.y-=10;}
+                if (up) {
+                    this.yVel=10; 
+                    this.y-=10;
+                   
+                }
                 //if (down) {t=0; this.y+=1;}
                 //if (left) {t=0; this.x--}
                 //if (right) {t=0; this.x++}
-              
-                if (!up){ 
-                    if (this.y + this.h - this.yVel >= canvas.canvas.height){
-                        this.y = canvas.canvas.height - this.h;
-                    }
-                    else {
+                if (!up) {
                         this.y -= this.yVel; 
                         this.yVel-=1;
-                    } 
+                } 
+                if (this.y - this.yVel<= 0){
+                        this.y = 0;
+                }
+                if (this.y + this.h - this.yVel >= canvas.canvas.height){
+                    this.y = canvas.canvas.height - this.h;
+                }
+                    
+                else if (this.y <= 0){
+                    this.y = 0;
                 }
             };
         }
         
         Character.prototype = Object.create(Sprite.prototype);
         
-        var myChar = new Character(canvas.canvas.width/7,10,charSize,charSize,"fuzz.png");
+        var myChar = new Character(canvas.canvas.width/7,10,charSize,charSize,"potato2/sprite_1.png");
         
         //found supposedly more efficient way to animate on internet
         window.requestAnimFrame = (function(){
