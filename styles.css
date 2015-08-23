@@ -22,3 +22,11 @@ canvas {
     image-rendering: crisp-edges;               /*// Possible future browsers. */
     -ms-interpolation-mode: nearest-neighbor;   /*// IE (non standard naming)*/
 }
+
+div {
+    background: #88BFFF;
+    padding-left: 20px;
+    padding-bottom: 20px;
+    padding-top: 50px;
+    text-align: center;
+}

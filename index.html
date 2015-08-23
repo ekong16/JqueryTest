@@ -10,6 +10,12 @@
 </head>
 
 <body>
+    <div id="target">
+        Play Game
+    </div>
+    <div id="other">
+        Instructions
+    </div>
     <script src="jquery.js"></script>
     
     <script type="text/javascript">
@@ -23,8 +29,8 @@
         
         var canvas = canvasElement.get(0).getContext("2d");
         canvasElement.appendTo('body');
-        var textX = 100;
-        var textY = 100;
+        var textX = CANVAS_WIDTH/2-150;
+        var textY = 0;
         var FPS = 60;
         var scene = 0;
         
@@ -100,9 +106,12 @@
                 }
             });
         }
-        $(window).click(function(){
+        $("#target").click(function(){
+                scene = "game";
+            });
+        $("#other").click(function(){
                 if (scene === 0) {
-                scene ++;
+                scene = "instructions";
                 }
             });
         
@@ -184,9 +193,11 @@
         })();
         
         function update(){
-            if (scene === 1) {
-            textX += 1;
-            textY += 1;
+            if (scene === 0) {
+                if (textY < 250) {
+                textY++;
+                }
+            } else if (scene === "game") {
             myChar.move();
             }
         }
@@ -196,12 +207,17 @@
             if (scene === 0) {
             canvas.clearRect(0,0,canvas.canvas.width,canvas.canvas.height);
             canvas.fillStyle = "#000"; // Set color to black
-            } else if (scene === 1) {
+            canvas.font = "80px Arial";
+            canvas.fillText("Hopper Game", textX, textY);
+            } else if (scene === "game") {
             canvas.clearRect(0,0,canvas.canvas.width,canvas.canvas.height);
             canvas.fillStyle = "#000"; // Set color to black
-            //canvas.font = "30px Arial";
-            //canvas.fillText("Sup!", textX, textY);
             myChar.draw();
+            } else if (scene === "instructions") {
+            canvas.clearRect(0,0,canvas.canvas.width,canvas.canvas.height);
+            canvas.fillStyle = "#000";
+            canvas.font = "30px Arial";
+            canvas.fillText("Instructions:", 100, 100);
             }
         }
         
