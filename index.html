@@ -10,12 +10,14 @@
 </head>
 
 <body>
-    <div id="target">
-        Play Game
-    </div>
-    <div id="other">
-        Instructions
-    </div>
+    <article class="scene0" id="startpage">
+        <button class="scene0" id="target">
+            Play Game
+        </button>
+        <button class="scene0" id="other">
+            Instructions
+        </button>
+    </article>
     <script src="jquery.js"></script>
     
     <script type="text/javascript">
@@ -49,10 +51,15 @@
                 window.scrollTo(0,50); });
             window.addEventListener('touchstart', function(e){
                 e.preventDefault();
-                if (!jumped){
-                    up = true;
-                    jumped = true;
-                } else{up = false;}
+                if (scene === 0){
+                    scene = "game";
+                }
+                else if (scene === "game"){
+                    if (!jumped){
+                        up = true;
+                        jumped = true;
+                    } else{up = false;}
+                }
             }, false);
             
             window.addEventListener('touchend', function(e){
@@ -108,6 +115,7 @@
         }
         $("#target").click(function(){
                 scene = "game";
+                $(".scene0").hide();
             });
         $("#other").click(function(){
                 if (scene === 0) {
@@ -124,6 +132,9 @@
             myChar.vel = canvas.canvas.height/70
             myChar.fall = canvas.canvas.height/500;
         }
+        
+        //function scene0(){
+              
         
         function Sprite(x,y,w,h,img_src) {
             this.img = new Image(); 
@@ -204,17 +215,19 @@
        
         
         function draw(){
+            
             if (scene === 0) {
-            canvas.clearRect(0,0,canvas.canvas.width,canvas.canvas.height);
-            canvas.fillStyle = "#000"; // Set color to black
+            
+            /*canvas.fillStyle = "#000"; // Set color to black
             canvas.font = "80px Arial";
-            canvas.fillText("Hopper Game", textX, textY);
+            canvas.fillText("Hopper Game", textX, textY);*/
+                
             } else if (scene === "game") {
             canvas.clearRect(0,0,canvas.canvas.width,canvas.canvas.height);
             canvas.fillStyle = "#000"; // Set color to black
             myChar.draw();
             } else if (scene === "instructions") {
-            canvas.clearRect(0,0,canvas.canvas.width,canvas.canvas.height);
+           
             canvas.fillStyle = "#000";
             canvas.font = "30px Arial";
             canvas.fillText("Instructions:", 100, 100);

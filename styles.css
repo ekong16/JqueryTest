@@ -23,10 +23,19 @@ canvas {
     -ms-interpolation-mode: nearest-neighbor;   /*// IE (non standard naming)*/
 }
 
-div {
+#startpage {
+    display:block;
     background: #88BFFF;
-    padding-left: 20px;
-    padding-bottom: 20px;
-    padding-top: 50px;
-    text-align: center;
+    /*top: 0; right: 0; bottom: 0; left: 0;*/
+    position: absolute;
+    width:100vw;
+    height:100vh;
 }
+
+button.scene0 {
+    background: #88BFFF;
+    display: block;
+    margin: auto;
+}
+
+
