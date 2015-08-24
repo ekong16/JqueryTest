@@ -141,8 +141,7 @@
             
         }
               
-        function getRatio(val,dimension){
-            var wratio = val
+      
         function Sprite(x,y,w,h,img_src) {
             this.img = new Image(); 
             this.img.src = img_src || null;
@@ -199,7 +198,7 @@
         
         function Blocks(x,y,w,h) {
             Sprite.call(this,x,y,w,h);
-            this.vel = Math.random()*canvas.canvas.width/70;
+            this.vel = Math.floor(Math.random()+1)*canvas.canvas.width/300;
             this.img.src = blockpics[(function(){return Math.floor(Math.random()*3)})()];
             
             this.move = function(){
@@ -207,7 +206,7 @@
             };
         }
         
-        var myBlock = new Blocks(canvas.canvas.width*1.2,canvas.canvas.height/20,charSize,charSize);
+        var myBlock = new Blocks(canvas.canvas.width*1.2,canvas.canvas.height/20,charSize*1.1,charSize*1.1);
         var myChar = new Character(canvas.canvas.width/7,10,charSize,charSize,"potato2/sprite_1.png");
         
         //found supposedly more efficient way to animate on internet
