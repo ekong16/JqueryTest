@@ -68,6 +68,10 @@
             e.preventDefault();
             if (scene === 0){
                 scene = "game";
+                myChar.draw();
+                for (var index in enemies) {
+                enemies[index].draw();
+            }
             }
             else if (scene === "game"){
                 if (!jumped){
@@ -263,7 +267,7 @@
     
     function checkHit(object1, object2) {
         if ((object2.x > object1.x - object1.w) && (object2.x < object1.x + object1.w)) {
-            if (((object1.y > object2.y) && (object1.y < object2.y + object2.h)) || ((object2.y > object2.y) && (object2.y < object1.y + object1.h))) {
+            if (((object1.y > object2.y) && (object1.y < object2.y + object2.h)) || ((object2.y > object1.y) && (object2.y < object1.y + object1.h))) {
                 return true;
             } else {
                 return false;
@@ -327,10 +331,9 @@
                 enemies[index].move();
                 enemies[index].checkDone();
                 if (checkHit(myChar, enemies[index])) {
-                    $(".scenehelp").show();
                     scene = 0;
                     canvas.font = "30px Arial";
-                    canvas.fillText("You lose!", canvas.canvas.width/2, canvas.canvas.height/2);
+                    canvas.fillText("You lose", canvas.canvas.width/2, canvas.canvas.height/2);
                 }
             }
         }
