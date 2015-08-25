@@ -28,266 +28,289 @@
     <script type="text/javascript">
         /*TODO: Figure out how to get mobile version to be so that you cant hold it indefinitely.
         */
-        var CANVAS_WIDTH = window.innerWidth;
-        var CANVAS_HEIGHT = window.innerHeight;
+    var CANVAS_WIDTH = window.innerWidth;
+    var CANVAS_HEIGHT = window.innerHeight;
 
-        var canvasElement = $("<canvas width='" + CANVAS_WIDTH + 
-                              "' height='" + CANVAS_HEIGHT + "'></canvas>");
-        
-        var canvas = canvasElement.get(0).getContext("2d");
-        canvasElement.appendTo('body');
-        var textX = CANVAS_WIDTH/2-150;
-        var textY = 0;
-        var FPS = 60;
-        var scene = 0;
-        
-        var right = false;
-        var up = false;
-        var left = false;
-        var down = false;
-        var jumped = false;
-        var charSize = canvas.canvas.height*0.1;
-        var blockpics = ["potato2/sprite_5.png","potato2/sprite_6.png","potato2/sprite_7.png"];
-        var numBlocks = 6;
-        var xMin = canvas.canvas.width*1.2;
-        var xMax = (canvas.canvas.width*1.2)+(canvas.canvas.width*1.2)/10;
-       
-        
-        //Check if computer or mobile. Adds relevent event listeners --keyboard or touch. 
-        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            window.addEventListener('orientationchange', resizeCanvas, false);
-            window.addEventListener('load', function(){ 
-                window.scrollTo(0,50); });
-            window.addEventListener('touchstart', function(e){
-                e.preventDefault();
-                if (scene === 0){
-                    scene = "game";
-                }
-                else if (scene === "game"){
-                    if (!jumped){
-                        up = true;
-                        jumped = true;
-                    } else{up = false;}
-                }
-            }, false);
-            
-            window.addEventListener('touchend', function(e){
-                e.preventDefault();
-                up = false; jumped = false;
-            }, false);
-            
-            window.addEventListener('touchmove', function(e){
-                e.preventDefault();
-            },false);
-        }
-        else {
-            window.addEventListener('resize', resizeCanvas, false);
-            
-            $(window).keydown(function(e){
-                //alert("hi");
-                switch(e.which) {
-                        case 37: left = true; 
-                        break;
+    var canvasElement = $("<canvas width='" + CANVAS_WIDTH + 
+                          "' height='" + CANVAS_HEIGHT + "'></canvas>");
 
-                        case 32: if (!jumped) {up = true; jumped = true;} else{up=false;}
-                        break;
+    var canvas = canvasElement.get(0).getContext("2d");
+    canvasElement.appendTo('body');
+    var textX = CANVAS_WIDTH/2-150;
+    var textY = 0;
+    var FPS = 60;
+    var scene = 0;
 
-                        case 39: right = true;
-                        break;
+    var right = false;
+    var up = false;
+    var left = false;
+    var down = false;
+    var jumped = false;
+    var charSize = canvas.canvas.height*0.1;
+    var blockpics = ["potato2/sprite_5.png","potato2/sprite_6.png","potato2/sprite_7.png"];
+    var numBlocks = 4;
+    var xMin = canvas.canvas.width;
+    var xMax = canvas.canvas.width*2;
+    var yMax = canvas.canvas.height-charSize;
 
-                        case 40: down = true;
-                        break;
+    var myChar = new Character(canvas.canvas.width/7,10,charSize,charSize,"potato2/sprite_1.png");
 
-                        default: return;
+    var enemies = createBlocks(numBlocks);
 
-                }
-                e.preventDefault();
-            });
 
-            $(window).keyup(function(e){
-                switch(e.which) {
-                        case 37: left = false; 
-                        break;
-
-                        case 32: up = false; jumped = false;
-                        break;
-
-                        case 39: right = false;
-                        break;
-
-                        case 40: down = false;
-                        break;
-
-                        default: return;
-                }
-            });
-        }
-        $("#target").bind("click touchstart", function(){
+    //Check if computer or mobile. Adds relevent event listeners --keyboard or touch. 
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        window.addEventListener('orientationchange', resizeCanvas, false);
+        window.addEventListener('load', function(){ 
+            window.scrollTo(0,50); });
+        window.addEventListener('touchstart', function(e){
+            e.preventDefault();
+            if (scene === 0){
                 scene = "game";
-                $(".scene0").hide();
-            });
-        $("#other").bind("click touchstart", function(){
-                scene = "instructions";
-                $(".scene0").hide();
-                $(".scenehelp").show();
-            });
-        $("#return").bind("click touchstart", function(){
-                scene = 0;
-                $(".scenehelp").hide();
-                $(".scene0").show();
-            });
-
-        function resizeCanvas(){
-            canvas.canvas.width = window.innerWidth;
-            canvas.canvas.height = window.innerHeight;
-            myChar.resize();
-            
-        }
-              
-      
-        function Sprite(x,y,w,h,img_src) {
-            this.img = new Image(); 
-            this.img.src = img_src || null;
-            this.x = x;
-            this.y = y;
-            this.w = w;
-            this.h = h;
-            this.draw = function(){
-                canvas.drawImage(this.img, this.x,this.y,this.w,this.h);
-            };
-        }
-            
-        function Character(x,y,w,h,img_src) {
-            var t = 0;
-            Sprite.call(this,x,y,w,h,img_src);
-            this.vel = canvas.canvas.height/70; 
-            this.yVel = this.vel;
-            this.fall = canvas.canvas.height/500;
-            this.resize = function (){
-                this.w = canvas.canvas.height*0.10;
-                this.h = canvas.canvas.height*0.10;
-                this.x = canvas.canvas.width/7;
-                this.vel = canvas.canvas.height/70
-                this.fall = canvas.canvas.height/500;
-            };
-            this.move = function(){
-                if (up) { 
-                    this.yVel=this.vel;
-                    this.y -= this.vel;
-                    this.img.src="potato2/sprite_3.png";
-                }
-                //if (down) {t=0; this.y+=1;}
-                //if (left) {t=0; this.x--}
-                //if (right) {t=0; this.x++}
-                if (!up) {
-                    this.y -= this.yVel; 
-                    this.yVel -= this.fall;
-                    this.img.src="potato2/sprite_1.png";
-                } 
-                if (this.y - this.yVel <= 0){
-                        this.y = 0;
-                }
-                if (this.y + this.h - this.yVel >= canvas.canvas.height){
-                    this.y = canvas.canvas.height - this.h;
-                }
-                    
-                else if (this.y <= 0){
-                    this.y = 0;
-                }
-            };
-        }
-        
-        Character.prototype = Object.create(Sprite.prototype);
-        
-        function Blocks(x,y,w,h) {
-            Sprite.call(this,x,y,w,h);
-            this.vel = Math.floor(Math.random()+1)*canvas.canvas.width/300;
-            this.img.src = blockpics[(function(){return Math.floor(Math.random()*3)})()];
-            
-            this.move = function(){
-                this.x -= this.vel;
-            };
-            this.checkDone = function() {
-                if (this.x < 0) {
-                    this.x = canvas.canvas.width*1.2;
-                    numBlocks += 1;
-                    this.y = Math.floor(Math.random()*canvas.canvas.height);
-                }
             }
-        }
-
-        function createBlocks(numBlocks) {
-            var i = 1;
-            var blocks = [];
-            while (i < numBlocks) {
-                var xPos = Math.floor(Math.random()*(xMax-xMin+1)+xMin);
-                var yPos = Math.floor(Math.random()*canvas.canvas.height)
-                blocks[i-1] = new Blocks(xPos,yPos,charSize*1.1,charSize*1.1);
-                i++;
+            else if (scene === "game"){
+                if (!jumped){
+                    up = true;
+                    jumped = true;
+                } else{up = false;}
             }
-            return blocks;
-        }
-        
-        /*var myBlock = new Blocks(canvas.canvas.width*1.2,canvas.canvas.height/20,charSize*1.1,charSize*1.1);*/
+        }, false);
 
+        window.addEventListener('touchend', function(e){
+            e.preventDefault();
+            up = false; jumped = false;
+        }, false);
 
-        var myChar = new Character(canvas.canvas.width/7,10,charSize,charSize,"potato2/sprite_1.png");
-        
-        //found supposedly more efficient way to animate on internet
-        window.requestAnimFrame = (function(){
-            return window.requestAnimationFrame||
-            window.webkitRequestAnimationFrame ||
-            window.mozRequestAnimationFrame    ||
-            window.oRequestAnimationFrame      || 
-            window.msRequestAnimationFrame     || 
-            function(callback){
-                window.setTimeout(callback, 1000 / 60);
-            };
-        })();
-        
-        (function animloop(){
-            requestAnimFrame(animloop);
-            update();
-            draw();
-        })();
+        window.addEventListener('touchmove', function(e){
+            e.preventDefault();
+        },false);
+    }
+    else {
+        window.addEventListener('resize', resizeCanvas, false);
 
-        var enemies = createBlocks(numBlocks);
+        $(window).keydown(function(e){
+            //alert("hi");
+            switch(e.which) {
+                    case 37: left = true; 
+                    break;
 
-        function draw(){
-            if (scene === 0) {
+                    case 32: if (!jumped) {up = true; jumped = true;} else{up=false;}
+                    break;
+
+                    case 39: right = true;
+                    break;
+
+                    case 40: down = true;
+                    break;
+
+                    default: return;
+
+            }
+            e.preventDefault();
+        });
+
+        $(window).keyup(function(e){
+            switch(e.which) {
+                    case 37: left = false; 
+                    break;
+
+                    case 32: up = false; jumped = false;
+                    break;
+
+                    case 39: right = false;
+                    break;
+
+                    case 40: down = false;
+                    break;
+
+                    default: return;
+            }
+        });
+    }
+    $("#target").bind("click touchstart", function(){
+            scene = "game";
+            $(".scene0").hide();
+        });
+    $("#other").bind("click touchstart", function(){
+            scene = "instructions";
+            $(".scene0").hide();
+            $(".scenehelp").show();
+        });
+    $("#return").bind("click touchstart", function(){
+            scene = 0;
             $(".scenehelp").hide();
-            /*canvas.fillStyle = "#000"; // Set color to black
-            canvas.font = "80px Arial";
-            canvas.fillText("Hopper Game", textX, textY);*/
-                
-            } else if (scene === "game") {
+            $(".scene0").show();
+        });
+
+    function resizeCanvas(){
+        canvas.canvas.width = window.innerWidth;
+        canvas.canvas.height = window.innerHeight;
+        myChar.resize();
+        for (index in enemies) {
+            enemies[index].resize();
+        }
+        xMin = canvas.canvas.width;
+        xMax = canvas.canvas.width*2;
+        yMax = canvas.canvas.height-canvas.canvas.height*0.1;
+    }
+
+
+    function Sprite(x,y,w,h,img_src) {
+        this.img = new Image(); 
+        this.img.src = img_src || null;
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        this.draw = function(){
+            canvas.drawImage(this.img, this.x,this.y,this.w,this.h);
+        };
+    }
+
+    function Character(x,y,w,h,img_src) {
+        var t = 0;
+        Sprite.call(this,x,y,w,h,img_src);
+        this.vel = canvas.canvas.height/70; 
+        this.yVel = this.vel;
+        this.fall = canvas.canvas.height/500;
+        this.resize = function (){
+            this.w = canvas.canvas.height*0.10;
+            this.h = canvas.canvas.height*0.10;
+            this.x = canvas.canvas.width/7;
+            this.vel = canvas.canvas.height/70
+            this.fall = canvas.canvas.height/500;
+        };
+        this.move = function(){
+            if (up) { 
+                this.yVel=this.vel;
+                this.y -= this.vel;
+                this.img.src="potato2/sprite_3.png";
+            }
+            //if (down) {t=0; this.y+=1;}
+            //if (left) {t=0; this.x--}
+            //if (right) {t=0; this.x++}
+            if (!up) {
+                this.y -= this.yVel; 
+                this.yVel -= this.fall;
+                this.img.src="potato2/sprite_1.png";
+            } 
+            if (this.y - this.yVel <= 0){
+                    this.y = 0;
+            }
+            if (this.y + this.h - this.yVel >= canvas.canvas.height){
+                this.y = canvas.canvas.height - this.h;
+            }
+
+            else if (this.y <= 0){
+                this.y = 0;
+            }
+        };
+    }
+
+    Character.prototype = Object.create(Sprite.prototype);
+
+    function Blocks(x,y,w,h) {
+        Sprite.call(this,x,y,w,h);
+        this.vel = Math.floor(Math.random()+1)*canvas.canvas.width/300;
+        this.img.src = blockpics[(function(){return Math.floor(Math.random()*3)})()];
+        this.yRatio = Math.random();
+        this.move = function(){
+            this.x -= this.vel;
+        };
+
+        this.resize = function() {
+            this.w = canvas.canvas.height*0.10*1.1;
+            this.h = canvas.canvas.height*0.10*1.1;
+            this.vel = Math.floor(Math.random()+1)*canvas.canvas.width/300;
+            this.y = this.yRatio*canvas.canvas.height;
+        };
+
+        this.checkDone = function() {
+            if (this.x + this.w < 0) {
+                this.yRatio = Math.random();
+                this.x = canvas.canvas.width*1.2;
+                numBlocks += 1;
+                this.y = Math.floor(this.yRatio*canvas.canvas.height);
+            }
+        }
+    }
+
+    function spacer(x,y,w,h,quadnum){
+        var quads = [[0,0],[0,1],[1,0],[1,1]];
+        var quad = quads[quadnum];
+        var xPos = Math.random()*(w/2)+x+w/2*quad[0];
+        var yPos = Math.random()*(h/2)+y+h/2*quad[1];
+        return [xPos,yPos];
+    }
+
+    function createBlocks(numBlocks) {
+        var i = 0;
+        var blocks = [];
+        var num;
+        while (i < numBlocks){
+            num = i % 4;
+            coords = spacer(xMin,0,(xMax-xMin),yMax,num);
+            blocks.push(new Blocks(coords[0],coords[1],charSize*1.1,charSize*1.1));
+            i++;
+        }
+        return blocks;
+    }
+
+    /*var myBlock = new Blocks(canvas.canvas.width*1.2,canvas.canvas.height/20,charSize*1.1,charSize*1.1);*/
+
+    //found supposedly more efficient way to animate on internet
+    window.requestAnimFrame = (function(){
+        return window.requestAnimationFrame||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame    ||
+        window.oRequestAnimationFrame      || 
+        window.msRequestAnimationFrame     || 
+        function(callback){
+            window.setTimeout(callback, 1000 / 60);
+        };
+    })();
+
+    (function animloop(){
+        requestAnimFrame(animloop);
+        update();
+        draw();
+    })();
+
+    function draw(){
+        if (scene === 0) {
+        $(".scenehelp").hide();
+        /*canvas.fillStyle = "#000"; // Set color to black
+        canvas.font = "80px Arial";
+        canvas.fillText("Hopper Game", textX, textY);*/
+
+        } else if (scene === "game") {
             canvas.clearRect(0,0,canvas.canvas.width,canvas.canvas.height);
             canvas.fillStyle = "#000"; // Set color to black
             for (var index in enemies) {
                 enemies[index].draw();
             }
             myChar.draw();
-            } else if (scene === "instructions") {
-            /*canvas.fillStyle = "#000";
-            canvas.font = "30px Arial";
-            canvas.fillText("Instructions:", 100, 100);*/
-            }
-        }
 
-        function update(){
-            if (scene === 0) {
-                if (textY < 250) {
-                textY++;
-                }
-            } else if (scene === "game") {
+        } else if (scene === "instructions") {
+        /*canvas.fillStyle = "#000";
+        canvas.font = "30px Arial";
+        canvas.fillText("Instructions:", 100, 100);*/
+        }
+    }
+
+    function update(){
+        if (scene === 0) {
+            if (textY < 250) {
+            textY++;
+            }
+        } else if (scene === "game") {
             myChar.move();
             for (var index in enemies) {
                 enemies[index].move();
                 enemies[index].checkDone();
             }
-            }
         }
-        
+    }      
     </script>
     
 </body>
