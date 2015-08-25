@@ -68,10 +68,6 @@
             e.preventDefault();
             if (scene === 0){
                 scene = "game";
-                myChar.draw();
-                for (var index in enemies) {
-                enemies[index].draw();
-            }
             }
             else if (scene === "game"){
                 if (!jumped){
