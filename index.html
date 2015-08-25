@@ -260,6 +260,18 @@
         }
         return blocks;
     }
+    
+    function checkHit(object1, object2) {
+        if ((object2.x > object1.x - object1.w) && (object2.x < object1.x + object1.w)) {
+            if (((object1.y > object2.y) && (object1.y < object2.y + object2.h)) || ((object2.y > object2.y) && (object2.y < object1.y + object1.h))) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 
     /*var myBlock = new Blocks(canvas.canvas.width*1.2,canvas.canvas.height/20,charSize*1.1,charSize*1.1);*/
 
@@ -314,6 +326,12 @@
             for (var index in enemies) {
                 enemies[index].move();
                 enemies[index].checkDone();
+                if (checkHit(myChar, enemies[index])) {
+                    $(".scenehelp").show();
+                    scene = 0;
+                    canvas.font = "30px Arial";
+                    canvas.fillText("You lose!", canvas.canvas.width/2, canvas.canvas.height/2);
+                }
             }
         }
     }      
