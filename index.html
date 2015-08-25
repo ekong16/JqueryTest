@@ -46,7 +46,8 @@
     var left = false;
     var down = false;
     var jumped = false;
-    var charSize = canvas.canvas.height*0.1;
+    var charSize = Math.floor(canvas.canvas.height*0.1);
+    var blockSize = Math.floor(charSize*1.1);
     var blockpics = ["potato2/sprite_5.png","potato2/sprite_6.png","potato2/sprite_7.png"];
     var numBlocks = 6;
     var xMin = canvas.canvas.width;
@@ -252,7 +253,7 @@
         while (i < numBlocks){
             num = i % 4;
             coords = spacer(xMin,0,(xMax-xMin),yMax,num);
-            newBlock = new Blocks(coords[0],coords[1],charSize*1.1,charSize*1.1)
+            newBlock = new Blocks(coords[0],coords[1],blockSize,blockSize)
             blocks.push(newBlock);
             newBlock.quad = num;
             i++;
