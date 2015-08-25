@@ -225,7 +225,13 @@
         this.resize = function() {
             this.w = Math.floor(canvas.canvas.height*0.10*1.1);
             this.h = Math.floor(canvas.canvas.height*0.10*1.1);
-            this.vel = Math.floor(this.velRatio*canvas.canvas.width);
+            this.vel = (function(){
+                if (Math.floor(this.velRatio*canvas.canvas.width) === 0) {
+                    return 1;
+                } else {
+                    return    Math.floor(Math.floor(Math.random()+1)*canvas.canvas.width/300);
+                }
+            })();
             this.y = Math.floor(this.yRatio*canvas.canvas.height);
         };
 
@@ -234,6 +240,7 @@
                 coords = spacer(xMin,0,(xMax-xMin),yMax,this.quad);
                 this.x = coords[0];
                 this.y = coords[1]; 
+                this.vel=Math.floor(Math.floor(Math.random()+1)*canvas.canvas.width/300);
             }
         }
     }
@@ -316,6 +323,7 @@
                 enemies[index].checkDone();
             }
         }
+        console.log(enemies[0].vel);
     }      
     </script>
     
