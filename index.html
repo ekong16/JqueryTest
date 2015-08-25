@@ -48,6 +48,7 @@
         var jumped = false;
         var charSize = canvas.canvas.height*0.1;
         var blockpics = ["potato2/sprite_5.png","potato2/sprite_6.png","potato2/sprite_7.png"];
+        var numBlocks = 6;
        
         
         //Check if computer or mobile. Adds relevent event listeners --keyboard or touch. 
@@ -204,9 +205,28 @@
             this.move = function(){
                 this.x -= this.vel;
             };
+            this.checkDone = function() {
+                if (this.x < 0) {
+                    this.x = canvas.canvas.width*1.2;
+                    numBlocks += 1;
+                }
+            }
+        }
+
+        function createBlocks(numBlocks) {
+            var i = 1;
+            var blocks = [];
+            while (i < numBlocks) {
+                var yPos = Math.floor(Math.random()*canvas.canvas.height)
+                blocks[i-1] = new Blocks(canvas.canvas.width*1.2,yPos,charSize*1.1,charSize*1.1);
+                i++;
+            }
+            return blocks;
         }
         
-        var myBlock = new Blocks(canvas.canvas.width*1.2,canvas.canvas.height/20,charSize*1.1,charSize*1.1);
+        /*var myBlock = new Blocks(canvas.canvas.width*1.2,canvas.canvas.height/20,charSize*1.1,charSize*1.1);*/
+
+
         var myChar = new Character(canvas.canvas.width/7,10,charSize,charSize,"potato2/sprite_1.png");
         
         //found supposedly more efficient way to animate on internet
@@ -227,6 +247,8 @@
             draw();
         })();
         
+        var enemies = createBlocks(numBlocks);
+
         function update(){
             if (scene === 0) {
                 if (textY < 250) {
@@ -234,7 +256,10 @@
                 }
             } else if (scene === "game") {
             myChar.move();
-            myBlock.move();
+            for (var index in enemies) {
+                enemies[index].move();
+                enemies[index].checkDone();
+            }
             }
         }
        
@@ -249,7 +274,9 @@
             } else if (scene === "game") {
             canvas.clearRect(0,0,canvas.canvas.width,canvas.canvas.height);
             canvas.fillStyle = "#000"; // Set color to black
-            myBlock.draw();
+            for (var index in enemies) {
+                enemies[index].draw();
+            }
             myChar.draw();
             } else if (scene === "instructions") {
             /*canvas.fillStyle = "#000";
