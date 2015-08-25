@@ -53,7 +53,7 @@
     var xMax = canvas.canvas.width*2;
     var yMax = canvas.canvas.height-charSize;
 
-    var myChar = new Character(canvas.canvas.width/7,10,charSize,charSize,"potato2/sprite_1.png");
+    var myChar = new Character(canvas.canvas.width/7,50,charSize,charSize,"potato2/sprite_1.png");
 
     var enemies = createBlocks(numBlocks);
 
@@ -170,15 +170,16 @@
     function Character(x,y,w,h,img_src) {
         var t = 0;
         Sprite.call(this,x,y,w,h,img_src);
-        this.vel = canvas.canvas.height/70; 
+        this.vel = Math.floor(canvas.canvas.height/70); 
         this.yVel = this.vel;
-        this.fall = canvas.canvas.height/500;
+        this.fall = Math.floor(canvas.canvas.height/500+1);
+        
         this.resize = function (){
-            this.w = canvas.canvas.height*0.10;
-            this.h = canvas.canvas.height*0.10;
-            this.x = canvas.canvas.width/7;
-            this.vel = canvas.canvas.height/70
-            this.fall = canvas.canvas.height/500;
+            this.w = Math.floor(canvas.canvas.height*0.10);
+            this.h = Math.floor(canvas.canvas.height*0.10);
+            this.x = Math.floor(canvas.canvas.width/7);
+            this.vel = Math.floor(canvas.canvas.height/70);
+            this.fall = Math.floor(canvas.canvas.height/500+1);
         };
         this.move = function(){
             if (up) { 
@@ -221,10 +222,10 @@
         };
 
         this.resize = function() {
-            this.w = canvas.canvas.height*0.10*1.1;
-            this.h = canvas.canvas.height*0.10*1.1;
-            this.vel = this.velRatio*canvas.canvas.width;
-            this.y = this.yRatio*canvas.canvas.height;
+            this.w = Math.floor(canvas.canvas.height*0.10*1.1);
+            this.h = Math.floor(canvas.canvas.height*0.10*1.1);
+            this.vel = Math.floor(this.velRatio*canvas.canvas.width);
+            this.y = Math.floor(this.yRatio*canvas.canvas.height);
         };
 
         this.checkDone = function() {
@@ -239,8 +240,8 @@
     function spacer(x,y,w,h,quadnum){
         var quads = [[0,0],[0,1],[1,0],[1,1]];
         var quad = quads[quadnum];
-        var xPos = Math.random()*(w/2)+x+w/2*quad[0];
-        var yPos = Math.random()*(h/2)+y+h/2*quad[1];
+        var xPos = Math.floor(Math.random()*(w/2)+x+w/2*quad[0]);
+        var yPos = Math.floor(Math.random()*(h/2)+y+h/2*quad[1]);
         return [xPos,yPos];
     }
 
@@ -308,6 +309,7 @@
             }
         } else if (scene === "game") {
             myChar.move();
+            console.log(myChar.fall);
             for (var index in enemies) {
                 enemies[index].move();
                 enemies[index].checkDone();
