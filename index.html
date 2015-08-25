@@ -66,10 +66,10 @@
             window.scrollTo(0,50); });
         window.addEventListener('touchstart', function(e){
             e.preventDefault();
-            if (scene === 0){
+            /*if (scene === 0){
                 scene = "game";
-            }
-            else if (scene === "game"){
+            }*/
+            if (scene === "game"){
                 if (!jumped){
                     up = true;
                     jumped = true;
