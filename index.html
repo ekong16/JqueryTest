@@ -48,7 +48,7 @@
     var jumped = false;
     var charSize = canvas.canvas.height*0.1;
     var blockpics = ["potato2/sprite_5.png","potato2/sprite_6.png","potato2/sprite_7.png"];
-    var numBlocks = 4;
+    var numBlocks = 6;
     var xMin = canvas.canvas.width;
     var xMax = canvas.canvas.width*2;
     var yMax = canvas.canvas.height-charSize;
@@ -213,7 +213,9 @@
         Sprite.call(this,x,y,w,h);
         this.vel = Math.floor(Math.random()+1)*canvas.canvas.width/300;
         this.img.src = blockpics[(function(){return Math.floor(Math.random()*3)})()];
-        this.yRatio = Math.random();
+        this.velRatio = this.vel/canvas.canvas.width;
+        this.yRatio = this.y/canvas.canvas.height;
+        this.quad = null;
         this.move = function(){
             this.x -= this.vel;
         };
@@ -221,16 +223,15 @@
         this.resize = function() {
             this.w = canvas.canvas.height*0.10*1.1;
             this.h = canvas.canvas.height*0.10*1.1;
-            this.vel = Math.floor(Math.random()+1)*canvas.canvas.width/300;
+            this.vel = this.velRatio*canvas.canvas.width;
             this.y = this.yRatio*canvas.canvas.height;
         };
 
         this.checkDone = function() {
             if (this.x + this.w < 0) {
-                this.yRatio = Math.random();
-                this.x = canvas.canvas.width*1.2;
-                numBlocks += 1;
-                this.y = Math.floor(this.yRatio*canvas.canvas.height);
+                coords = spacer(xMin,0,(xMax-xMin),yMax,this.quad);
+                this.x = coords[0];
+                this.y = coords[1]; 
             }
         }
     }
@@ -250,7 +251,9 @@
         while (i < numBlocks){
             num = i % 4;
             coords = spacer(xMin,0,(xMax-xMin),yMax,num);
-            blocks.push(new Blocks(coords[0],coords[1],charSize*1.1,charSize*1.1));
+            newBlock = new Blocks(coords[0],coords[1],charSize*1.1,charSize*1.1)
+            blocks.push(newBlock);
+            newBlock.quad = num;
             i++;
         }
         return blocks;
