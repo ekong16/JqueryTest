@@ -50,8 +50,8 @@
     var blockSize = Math.floor(charSize*1.1);
     var blockpics = ["potato2/sprite_5.png","potato2/sprite_6.png","potato2/sprite_7.png"];
     var numBlocks = 6;
-    var xMin = canvas.canvas.width;
-    var xMax = canvas.canvas.width*2;
+    var xMin = canvas.canvas.width; //The x coordinate that defines the quadrants where blocks are created
+    var xMax = canvas.canvas.width*2; //The endpoint.
     var yMax = canvas.canvas.height-charSize;
 
     var myChar = new Character(canvas.canvas.width/7,50,charSize,charSize,"potato2/sprite_1.png");
@@ -244,7 +244,15 @@
             }
         }
     }
-
+        
+   
+         
+    function intRand(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+        
+     //Divides a theoretical area into 4 quadrants, defined by starting (x,y) at top left and a w and h. Gives a random position for a quad as indicated by quadnum. Quad numbers are counted left to right, top to bottom. 
+        
     function spacer(x,y,w,h,quadnum){
         var quads = [[0,0],[0,1],[1,0],[1,1]];
         var quad = quads[quadnum];
@@ -253,14 +261,25 @@
         return [xPos,yPos];
     }
 
+    //gets the new definitions of a subquad. Might be useful?
+    function divider(x,y,w,h,quadnum) {
+        var quads = [[0,0],[0,1],[1,0],[1,1]];
+        quad = quads[quadnum];
+        newX = x+w/2*quad[0];
+        newY = y+h/2*quad[1];
+        newW = w/2;
+        newH = h/2;
+        return [newX,newY,newW,newH];
+    }
+        
     function createBlocks(numBlocks) {
         var i = 0;
         var blocks = [];
         var num;
         while (i < numBlocks){
             num = i % 4;
-            coords = spacer(xMin,0,(xMax-xMin),yMax,num);
-            newBlock = new Blocks(coords[0],coords[1],blockSize,blockSize)
+            var coords = spacer(xMin,0,(xMax-xMin),yMax,num);
+            var newBlock = new Blocks(coords[0],coords[1],blockSize,blockSize)
             blocks.push(newBlock);
             newBlock.quad = num;
             i++;
@@ -268,6 +287,15 @@
         return blocks;
     }
     
+    //think this should work. did not test.
+    function addBlock(array,num) {
+        var coords = spacer(xMin,0,(xMax-xMin),yMax,num);
+        var newBlock = new Blocks(coords[0],coords[1],blockSize,blockSize)
+        array.push(newBlock);
+        newBlock.quad = num;
+    }
+    
+    //I think this doesn't account for every possibility. 
     function checkHit(object1, object2) {
         if ((object2.x > object1.x - object1.w) && (object2.x < object1.x + object1.w)) {
             if (((object1.y + (object1.h - object1.h/3) > object2.y) && (object1.y + object1.h < object2.y + object2.h)) || ((object2.y + object2.h - object1.h/5 > object1.y) && (object2.y + object2.h < object1.y + object1.h))) {
@@ -333,10 +361,13 @@
             for (var index in enemies) {
                 enemies[index].move();
                 enemies[index].checkDone();
-                if (checkHit(myChar, enemies[index])) {
-                    scene = 0;
-                    canvas.font = "30px Arial";
-                    canvas.fillText("You lose", canvas.canvas.width/2, canvas.canvas.height/2);
+                if (enemies[index].x < canvas.canvas.width/5 
+                    && enemies[index].x > canvas.canvas.width/9){
+                    if (checkHit(myChar, enemies[index])) {
+                        scene = 0;
+                        canvas.font = "30px Arial";
+                        canvas.fillText("You lose", canvas.canvas.width/2, canvas.canvas.height/2);
+                }
                 }
             }
         }
