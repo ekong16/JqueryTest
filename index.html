@@ -45,7 +45,6 @@
     var up = false;
     var left = false;
     var down = false;
-    var jumped = false;
     var charSize = Math.floor(canvas.canvas.height*0.1);
     var blockSize = Math.floor(charSize*1.1);
     var blockpics = ["potato2/sprite_5.png","potato2/sprite_6.png","potato2/sprite_7.png"];
@@ -53,7 +52,7 @@
     var xMin = canvas.canvas.width; //The x coordinate that defines the quadrants where blocks are created
     var xMax = canvas.canvas.width*2; //The endpoint.
     var yMax = canvas.canvas.height-charSize;
-
+    var active = true;
     var myChar = new Character(canvas.canvas.width/7,50,charSize,charSize,"potato2/sprite_1.png");
 
     var enemies = createBlocks(numBlocks);
@@ -95,7 +94,7 @@
                     case 37: left = true; 
                     break;
 
-                    case 32: if (!jumped) {up = true; jumped = true;} else{up=false;}
+                    case 32: up = true;
                     break;
 
                     case 39: right = true;
@@ -115,7 +114,7 @@
                     case 37: left = false; 
                     break;
 
-                    case 32: up = false; jumped = false;
+                    case 32: up = false;
                     break;
 
                     case 39: right = false;
@@ -171,16 +170,16 @@
     function Character(x,y,w,h,img_src) {
         var t = 0;
         Sprite.call(this,x,y,w,h,img_src);
-        this.vel = Math.floor(canvas.canvas.height/70); 
+        this.vel = Math.floor(canvas.canvas.height/80); 
         this.yVel = this.vel;
-        this.fall = Math.floor(canvas.canvas.height/500+1);
+        this.fall = Math.floor(canvas.canvas.height/550+1);
         
         this.resize = function (){
             this.w = Math.floor(canvas.canvas.height*0.10);
             this.h = Math.floor(canvas.canvas.height*0.10);
             this.x = Math.floor(canvas.canvas.width/7);
-            this.vel = Math.floor(canvas.canvas.height/70);
-            this.fall = Math.floor(canvas.canvas.height/500+1);
+            this.vel = Math.floor(canvas.canvas.height/80);
+            this.fall = Math.floor(canvas.canvas.height/550+1);
         };
         this.move = function(){
             if (up) { 
@@ -188,18 +187,20 @@
                 this.y -= this.vel;
                 this.img.src="potato2/sprite_3.png";
             }
-            //if (down) {t=0; this.y+=1;}
-            //if (left) {t=0; this.x--}
-            //if (right) {t=0; this.x++}
+            /*if (up) {this.y -= 1;}
+            if (down) { this.y+=1;}
+            if (left) { this.x--}
+            if (right) { this.x++}
+            */
             if (!up) {
                 this.y -= this.yVel; 
                 this.yVel -= this.fall;
                 this.img.src="potato2/sprite_1.png";
             } 
-            if (this.y - this.yVel <= 0){
+            if (this.y <= 0){
                     this.y = 0;
             }
-            if (this.y + this.h - this.yVel >= canvas.canvas.height){
+            if (this.y + this.h >= canvas.canvas.height){
                 this.y = canvas.canvas.height - this.h;
             }
 
@@ -244,9 +245,7 @@
             }
         }
     }
-        
-   
-         
+    //could be useful?     
     function intRand(min, max) {
         return Math.random() * (max - min) + min;
     }
@@ -279,6 +278,7 @@
         while (i < numBlocks){
             num = i % 4;
             var coords = spacer(xMin,0,(xMax-xMin),yMax,num);
+            //var coords = spacer(0,0,xMin,yMax,num);
             var newBlock = new Blocks(coords[0],coords[1],blockSize,blockSize)
             blocks.push(newBlock);
             newBlock.quad = num;
@@ -295,22 +295,33 @@
         newBlock.quad = num;
     }
     
-    //I think this doesn't account for every possibility. 
-    function checkHit(object1, object2) {
-        if ((object2.x > object1.x - object1.w) && (object2.x < object1.x + object1.w)) {
-            if (((object1.y + (object1.h - object1.h/3) > object2.y) && (object1.y + object1.h < object2.y + object2.h)) || ((object2.y + object2.h - object1.h/5 > object1.y) && (object2.y + object2.h < object1.y + object1.h))) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
+    // Following 2 functions allow for customizable size of rectangle around a sprite. Basically caculates a smaller rectangle and uses that for collision detection instead. Xmarg, yMarg are optional parameters.
+    function getSmallRect(a,xMarg,yMarg){
+        var w1 = a.w*xMarg;
+        var h1 = a.h*yMarg;
+        var x1 = a.x + (a.w - w1)/2;
+        var y1 = a.y + (a.h - h1)/2;
+        return [x1,y1,w1,h1];
     }
-
-    /*var myBlock = new Blocks(canvas.canvas.width*1.2,canvas.canvas.height/20,charSize*1.1,charSize*1.1);*/
+    
+    function checkHitRect(a,b,xMarg,yMarg) { 
+        var xMarg = xMarg || 1;
+        var yMarg = yMarg || 1;
+        var newRect = getSmallRect(a,xMarg,yMarg);
+        var x1 = newRect[0];
+        var y1 = newRect[1];
+        var w1 = newRect[2];
+        var h1 = newRect[3];
+        return (x1 < b.x + b.w &&
+        x1 + w1 > b.x &&
+        y1 < b.y + b.h &&
+        y1 + h1 > b.y);
+    }
+        
+    
 
     //found supposedly more efficient way to animate on internet
+    
     window.requestAnimFrame = (function(){
         return window.requestAnimationFrame||
         window.webkitRequestAnimationFrame ||
@@ -321,13 +332,15 @@
             window.setTimeout(callback, 1000 / 60);
         };
     })();
-
+    var active = true;
     (function animloop(){
-        requestAnimFrame(animloop);
-        update();
-        draw();
+        if (active){
+            requestAnimFrame(animloop);
+            update();
+            draw();
+        }
     })();
-
+    
     function draw(){
         if (scene === 0) {
         $(".scenehelp").hide();
@@ -337,11 +350,23 @@
 
         } else if (scene === "game") {
             canvas.clearRect(0,0,canvas.canvas.width,canvas.canvas.height);
-            canvas.fillStyle = "#000"; // Set color to black
             for (var index in enemies) {
+                canvas.beginPath();
+                //canvas.rect(enemies[index].x,enemies[index].y,
+                //            enemies[index].w,enemies[index].h);
+                canvas.stroke();
+                canvas.closePath();
                 enemies[index].draw();
             }
+            var newRect = getSmallRect(myChar,0.8,0.8); //testing rectangle that is drawn
             myChar.draw();
+            canvas.beginPath();
+            canvas.rect(newRect[0],newRect[1],newRect[2],newRect[3]);//testing rectangle
+            //canvas.rect(myChar.x,myChar.y,myChar.w,myChar.h);//testing rectangle
+            canvas.stroke();
+            canvas.clear
+            canvas.closePath();
+            
 
         } else if (scene === "instructions") {
         /*canvas.fillStyle = "#000";
@@ -349,6 +374,7 @@
         canvas.fillText("Instructions:", 100, 100);*/
         }
     }
+   
 
     function update(){
         if (scene === 0) {
@@ -357,21 +383,21 @@
             }
         } else if (scene === "game") {
             myChar.move();
-            console.log(myChar.fall);
+            //console.log(myChar.fall);
             for (var index in enemies) {
                 enemies[index].move();
                 enemies[index].checkDone();
-                if (enemies[index].x < canvas.canvas.width/5 
-                    && enemies[index].x > canvas.canvas.width/9){
-                    if (checkHit(myChar, enemies[index])) {
-                        scene = 0;
-                        canvas.font = "30px Arial";
-                        canvas.fillText("You lose", canvas.canvas.width/2, canvas.canvas.height/2);
-                }
+                
+                if (checkHitRect(myChar, enemies[index],0.8,0.8)) {
+                    canvas.font = "30px Arial";
+                    canvas.fillText("You lose", canvas.canvas.width/2,  
+                                    canvas.canvas.height/2);
+                    console.log("True");
+                    active = false;
                 }
             }
         }
-        console.log(enemies[0].vel);
+        //console.log(enemies[0].vel);
     }      
     </script>
     
