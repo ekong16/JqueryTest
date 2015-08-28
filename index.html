@@ -11,11 +11,11 @@
 
 <body>
     <article class="scene0" id="startpage">
-        <button class="scene0" id="target">
-            Play Game
+        <button class="scene0" id="play">
+            <div>Play Game</div>
         </button>
-        <button class="scene0" id="other">
-            Instructions
+        <button class="scene0" id="instruct">
+            <div>Instructions</div>
         </button>
     </article>
     <article class="scenehelp" id="helpPage">
@@ -24,10 +24,15 @@
         </button>
     </article>
     <script src="jquery.js"></script>
+    <div id="losepage">
+        <div>You lose. <br/> Try Again? </div>
+        <button id="restart"><div>Yes. <br/>Of Course.</div></button>
+    </div>
     
     <script type="text/javascript">
         /*TODO: Figure out how to get mobile version to be so that you cant hold it indefinitely.
         */
+   
     var CANVAS_WIDTH = window.innerWidth;
     var CANVAS_HEIGHT = window.innerHeight;
 
@@ -56,8 +61,7 @@
     var myChar = new Character(canvas.canvas.width/7,50,charSize,charSize,"potato2/sprite_1.png");
 
     var enemies = createBlocks(numBlocks);
-
-
+    
     //Check if computer or mobile. Adds relevent event listeners --keyboard or touch. 
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         window.addEventListener('orientationchange', resizeCanvas, false);
@@ -127,11 +131,12 @@
             }
         });
     }
-    $("#target").bind("click touchstart", function(){
+    $("#losepage").hide();
+    $("#play").bind("click touchstart", function(){
             scene = "game";
             $(".scene0").hide();
         });
-    $("#other").bind("click touchstart", function(){
+    $("#instruct").bind("click touchstart", function(){
             scene = "instructions";
             $(".scene0").hide();
             $(".scenehelp").show();
@@ -142,6 +147,14 @@
             $(".scene0").show();
         });
 
+    $("#restart").bind("click touchstart", function(){
+            restart();
+            scene = 0;
+            //$("#losepage").hide();
+            //$(".scene0").show();
+            
+        });
+        
     function resizeCanvas(){
         canvas.canvas.width = window.innerWidth;
         canvas.canvas.height = window.innerHeight;
@@ -154,7 +167,20 @@
         yMax = canvas.canvas.height-canvas.canvas.height*0.1;
     }
 
-
+    
+    function restart(){
+        enemies = createBlocks(numBlocks);
+        active = true;
+        console.log(enemies[0].x||"undefined");
+        (function animloop(){
+        if (active){
+            requestAnimFrame(animloop);
+            update();
+            draw();
+        }
+    })();
+    }
+        
     function Sprite(x,y,w,h,img_src) {
         this.img = new Image(); 
         this.img.src = img_src || null;
@@ -181,6 +207,7 @@
             this.vel = Math.floor(canvas.canvas.height/80);
             this.fall = Math.floor(canvas.canvas.height/550+1);
         };
+        
         this.move = function(){
             if (up) { 
                 this.yVel=this.vel;
@@ -332,7 +359,7 @@
             window.setTimeout(callback, 1000 / 60);
         };
     })();
-    var active = true;
+    
     (function animloop(){
         if (active){
             requestAnimFrame(animloop);
@@ -377,10 +404,9 @@
    
 
     function update(){
+        
         if (scene === 0) {
-            if (textY < 250) {
-            textY++;
-            }
+            
         } else if (scene === "game") {
             myChar.move();
             //console.log(myChar.fall);
@@ -394,6 +420,7 @@
                                     canvas.canvas.height/2);
                     console.log("True");
                     active = false;
+                    $("#losepage").show();
                 }
             }
         }
