@@ -149,8 +149,7 @@
 
     $("#restart").bind("click touchstart", function(){
             restart();
-            scene = 0;
-            //$("#losepage").hide();
+            $("#losepage").hide();
             //$(".scene0").show();
             
         });
@@ -171,14 +170,9 @@
     function restart(){
         enemies = createBlocks(numBlocks);
         active = true;
+        scene = "game";
         console.log(enemies[0].x||"undefined");
-        (function animloop(){
-        if (active){
-            requestAnimFrame(animloop);
-            update();
-            draw();
-        }
-    })();
+        animloop();
     }
         
     function Sprite(x,y,w,h,img_src) {
@@ -360,14 +354,17 @@
         };
     })();
     
-    (function animloop(){
+    function animloop(){
         if (active){
             requestAnimFrame(animloop);
             update();
             draw();
+            console.log("a");
         }
-    })();
+    };
     
+    animloop();
+        
     function draw(){
         if (scene === 0) {
         $(".scenehelp").hide();
@@ -406,10 +403,10 @@
     function update(){
         
         if (scene === 0) {
-            
+            console.log("x");
         } else if (scene === "game") {
             myChar.move();
-            //console.log(myChar.fall);
+            console.log(myChar.fall);
             for (var index in enemies) {
                 enemies[index].move();
                 enemies[index].checkDone();
