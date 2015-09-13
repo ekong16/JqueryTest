@@ -30,8 +30,6 @@
     </div>
     
     <script type="text/javascript">
-        /*TODO: Figure out how to get mobile version to be so that you cant hold it indefinitely.
-        */
    
     var CANVAS_WIDTH = window.innerWidth;
     var CANVAS_HEIGHT = window.innerHeight;
@@ -150,8 +148,6 @@
     $("#restart").bind("click touchstart", function(){
             restart();
             $("#losepage").hide();
-            //$(".scene0").show();
-            
         });
         
     function resizeCanvas(){
@@ -164,6 +160,8 @@
         xMin = canvas.canvas.width;
         xMax = canvas.canvas.width*2;
         yMax = canvas.canvas.height-canvas.canvas.height*0.1;
+        charSize = Math.floor(canvas.canvas.height*0.1);
+        blockSize = Math.floor(charSize*1.1);
     }
 
     
@@ -171,7 +169,7 @@
         enemies = createBlocks(numBlocks);
         active = true;
         scene = "game";
-        console.log(enemies[0].x||"undefined");
+        //console.log(enemies[0].x||"undefined");
         animloop();
     }
         
@@ -339,8 +337,6 @@
         y1 + h1 > b.y);
     }
         
-    
-
     //found supposedly more efficient way to animate on internet
     
     window.requestAnimFrame = (function(){
@@ -359,7 +355,6 @@
             requestAnimFrame(animloop);
             update();
             draw();
-            console.log("a");
         }
     };
     
@@ -382,7 +377,7 @@
                 canvas.closePath();
                 enemies[index].draw();
             }
-            var newRect = getSmallRect(myChar,0.8,0.8); //testing rectangle that is drawn
+            var newRect = getSmallRect(myChar,0.8,0.75); //testing rectangle that is drawn
             myChar.draw();
             canvas.beginPath();
             canvas.rect(newRect[0],newRect[1],newRect[2],newRect[3]);//testing rectangle
@@ -391,7 +386,6 @@
             canvas.clear
             canvas.closePath();
             
-
         } else if (scene === "instructions") {
         /*canvas.fillStyle = "#000";
         canvas.font = "30px Arial";
@@ -403,7 +397,7 @@
     function update(){
         
         if (scene === 0) {
-            console.log("x");
+            
         } else if (scene === "game") {
             myChar.move();
             console.log(myChar.fall);
@@ -411,11 +405,7 @@
                 enemies[index].move();
                 enemies[index].checkDone();
                 
-                if (checkHitRect(myChar, enemies[index],0.8,0.8)) {
-                    canvas.font = "30px Arial";
-                    canvas.fillText("You lose", canvas.canvas.width/2,  
-                                    canvas.canvas.height/2);
-                    console.log("True");
+                if (checkHitRect(myChar, enemies[index],0.8,0.75)) {
                     active = false;
                     $("#losepage").show();
                 }
