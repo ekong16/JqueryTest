@@ -37,10 +37,10 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
             scene = "game";
         }*/
         if (scene === "game"){
-            if (!jumped){
+            //if (!jumped){
                 up = true;
                 //jumped = true;
-            } else{up = false;}
+            //} else{up = false;}
         }
     }, false);
 
