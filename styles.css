@@ -3,13 +3,13 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    
+
 }
 
 canvas {
     display:block;
     margin:0 auto;
-    
+
     /*border: 3px solid;
     border-color: black;*/
     background: #00BFFF;
@@ -33,9 +33,9 @@ canvas {
 }
 
 
-    
+
 .scene0 > button {
-    
+
     display: block;
     width: 20em;
     height:10em;
@@ -44,7 +44,7 @@ canvas {
     background-color:gainsboro;
     opacity: 0.8;
     border: 4px solid black;
-    
+
 }
 
 #play {
@@ -69,6 +69,13 @@ canvas {
     height:100vh;
 }
 
+#helpage > div {
+  font-family: monospace;
+  font-size: 2em;
+  opacity: 0.8;
+  text-align: center;
+}
+
 .scenehelp > #return {
     display: block;
     position: relative;
@@ -78,6 +85,8 @@ canvas {
     left: 20%;
     top: 20%;
 }
+
+
 
 #losepage {
     display:block;
@@ -112,5 +121,5 @@ canvas {
 #losepage > button > div {
     font-family: monospace;
     font-size: 1.5em;
-    
+
 }

@@ -27,10 +27,9 @@ var level = 1;
 var enemies = createBlocks(numBlocks);
 
 //Check if computer or mobile. Adds relevent event listeners --keyboard or touch. 
-if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     window.addEventListener('orientationchange', resizeCanvas, false);
-    window.addEventListener('load', function(){ 
-        window.scrollTo(0,50); });
+    window.addEventListener('load', function(){window.scrollTo(0,50);});
     window.addEventListener('touchstart', function(e){
         e.preventDefault();
         /*if (scene === 0){
@@ -133,6 +132,7 @@ function resizeCanvas(){
 
 function restart(){
     enemies = createBlocks(numBlocks);
+    level = 1;
     active = true;
     scene = "game";
     //console.log(enemies[0].x||"undefined");
@@ -307,7 +307,7 @@ function checkHitRect(a,b,xMarg,yMarg) {
 
     function checkLevelUp(enemy_array){
         for (index in enemy_array){
-            if (enemy_array[index].loops <= 2){
+            if (enemy_array[index].loops < 2){
                 console.log("A");
                 return false;
             }
@@ -319,6 +319,9 @@ function checkHitRect(a,b,xMarg,yMarg) {
 function levelUp(quadnum) {
     level += 1;
     addBlock(enemies, quadnum);
+    for (index in enemies){
+        enemies[index].loops = 0;
+    }
 }
 
 //found supposedly more efficient way to animate on internet
@@ -354,7 +357,7 @@ function draw(){
     } else if (scene === "game") {
         canvas.clearRect(0,0,canvas.canvas.width,canvas.canvas.height);
         canvas.font = "20px monospace"
-        canvas.fillText(level, canvas.canvas.width-20, canvas.canvas.height-20);
+        canvas.fillText(level, canvas.canvas.width-20, 20);
         for (var index in enemies) {
             canvas.beginPath();
             //canvas.rect(enemies[index].x,enemies[index].y,
