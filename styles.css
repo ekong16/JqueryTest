@@ -1,18 +1,125 @@
 html, body {
-  width:  100%;
-  height: 100%;
-  margin: 10px;
+    width:  100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+
 }
 
 canvas {
     display:block;
-    margin:auto;
-    font-family: cursive;
-    border: 3px solid;
-    border-color: black;
+    margin:0 auto;
+
+    /*border: 3px solid;
+    border-color: black;*/
+    background: #00BFFF;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+     image-rendering: optimizeSpeed;             /*// Older versions of FF*/
+    image-rendering: -moz-crisp-edges;          /*// FF 6.0+*/
+    image-rendering: -webkit-optimize-contrast; /*// Webkit (non standard*/ naming)
+    image-rendering: -o-crisp-edges;            /*// OS X & Windows Opera*/ (12.02+)
+    image-rendering: crisp-edges;               /*// Possible future browsers. */
+    -ms-interpolation-mode: nearest-neighbor;   /*// IE (non standard naming)*/
 }
 
-h1 {
+#startpage {
+    display:block;
+    background: #88BFFF;
+    /*top: 0; right: 0; bottom: 0; left: 0;*/
+    position: absolute;
+    width:100vw;
+    height:100vh;
+}
+
+
+
+.scene0 > button {
+
+    display: block;
+    width: 20em;
+    height:10em;
+    position:relative;
+    margin: auto;
+    background-color:gainsboro;
+    opacity: 0.8;
+    border: 4px solid black;
+
+}
+
+#play {
+    top:20%;
+}
+
+#instruct {
+    top:30%;
+}
+
+.scene0 > div {
+    font-size: 2em;
+    font-family: monospace;
+}
+
+#helpPage {
+    display:block;
+    background: #88BFFF;
+    /*top: 0; right: 0; bottom: 0; left: 0;*/
+    position: absolute;
+    width:100vw;
+    height:100vh;
+}
+
+#helpage > div {
+  font-family: monospace;
+  font-size: 2em;
+  opacity: 0.8;
+  text-align: center;
+}
+
+.scenehelp > #return {
+    display: block;
+    position: relative;
+    background-color:gainsboro;
+    opacity: 0.8;
+    border: 4px solid black;
+    left: 20%;
+    top: 20%;
+}
+
+
+
+#losepage {
+    display:block;
+    position:absolute;
+    width:50vw;
+    height:50vh;
+    left:25%;
+    top:25%;
+    background-color:gainsboro;
+    opacity:0.8;
+    border:4px solid;
+    border-color:black;
+}
+
+#losepage > div {
+    font-family: monospace;
+    font-size: 2em;
+    opacity: 0.8;
     text-align: center;
-    font-family: cursive;
+}
+
+#losepage > button {
+    display: block;
+    position: relative;
+    background-color:gainsboro;
+    opacity: 0.8;
+    border: 4px solid black;
+    margin:auto;
+    top: 10%;
+}
+
+#losepage > button > div {
+    font-family: monospace;
+    font-size: 1.5em;
+
 }

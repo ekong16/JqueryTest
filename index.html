@@ -1,65 +1,42 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width,
+    user-scalable=no, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
     <title>Test</title>
     <link rel="stylesheet" href="styles.css"/>
 </head>
-   
-<body>
-    <script src="jquery.js"></script>
-    <h1>Test for jQuery</h1>
-    <script type="text/javascript">
-        var CANVAS_WIDTH = window.innerWidth*0.8;
-        var CANVAS_HEIGHT = window.innerHeight*0.8;
-        var cWidth = CANVAS_WIDTH;
-        var cHeight = CANVAS_HEIGHT;
-       
 
-        var canvasElement = $("<canvas width='" + CANVAS_WIDTH + 
-                              "' height='" + CANVAS_HEIGHT + "'></canvas>");
-        
-        var canvas = canvasElement.get(0).getContext("2d");
-        canvasElement.appendTo('body');
-        var textX = 100;
-        var textY = 100;
-        var FPS = 60;
-        
-        
-        function Sprite(x,y,w,h,img_src) {
-            this.x = x;
-            this.y = y;
-            this.w = w;
-            this.h = h;
-            this.img = new Image(); 
-            this.img.src = img_src;
-            this.draw = function(){
-                canvas.drawImage(this.img, this.x,this.y,this.w,this.h);
-            }; 
-        }
-            
-        var obstacle = new Sprite(10,10,50,50,"http://www.wpclipart.com/smiley/assorted_smiley/assorted_2/fuzzball_smiley.svg");
-        
-        
-        setInterval(function() {
-            update();
-            draw();
-        }, 1000/FPS);
-        
-        function update(){
-            textX += 1;
-            textY += 1;
-        }
-        
-        function draw(){
-            canvas.clearRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
-            canvas.fillStyle = "#000"; // Set color to black
-            canvas.font = "30px Arial";
-            canvas.fillText("Sup!", textX, textY);
-            obstacle.draw();
-        }
-        
-    </script>
-    
+<body>
+    <article class="scene0" id="startpage">
+        <button class="scene0" id="play">
+            <div>Play Game</div>
+        </button>
+        <button class="scene0" id="instruct">
+            <div>Instructions</div>
+        </button>
+    </article>
+    <article class="scenehelp" id="helpPage">
+        <div> If using a keyboard, press space to avoid the blocks. <br/>
+        If using Touchscreen device, tap to jump. <br/>
+        Avoid as many blocks as you can.
+        </div>
+        <button class="scenehelp" id="return">
+            Back
+        </button>
+    </article>
+    <script src="jquery.js"></script>
+    <div id="losepage">
+        <div>You lose. <br/> Try Again? </div>
+        <button id="restart"><div>Yes. <br/>Of Course.</div></button>
+    </div>
+
+    <script src="script.js" type="text/javascript" ></script><script type="text/javascript">
+
+
+
 </body>
-    
+
 </html>
